@@ -1,11 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+
+type ButtonProps = {
+  text: string;
+}
+
+function Button({ text }: ButtonProps) {
+  return (
+    <TouchableOpacity>
+      <Text>
+        {text}
+      </Text>
+    </TouchableOpacity>
+  )
+}
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text>Hello React-Native</Text>
       <StatusBar style="auto" />
+
+      <Button text="Send" />
     </View>
   );
 }
