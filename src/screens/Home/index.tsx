@@ -18,8 +18,8 @@ export function Home() {
 
   const navigation = useNavigation()
 
-  function handleOpenGameAds() {
-    navigation.navigate('game')
+  function handleOpenGameAds({id, title, baseUrl}:GameCardProps) {
+    navigation.navigate('game', {id, title, baseUrl})
   }
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export function Home() {
           renderItem={({item}) => (
             <GameCard
               data={item}
-              onPress={handleOpenGameAds}
+              onPress={() => handleOpenGameAds(item)}
             />
           )}
           horizontal
