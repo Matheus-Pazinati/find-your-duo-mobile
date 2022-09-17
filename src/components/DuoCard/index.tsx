@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { THEME } from '../../theme';
 
 import { DuoInfo } from '../DuoInfo';
@@ -16,10 +16,11 @@ export interface DuoCardProps {
 }
 
 interface Props {
-  data: DuoCardProps
+  data: DuoCardProps,
+  onConnect: () => void
 }
 
-export function DuoCard({ data }: Props) {
+export function DuoCard({ data, onConnect }: Props) {
 
   const playtheGameMorenThanOneYear = data.yearsPlaying > 1;
   const playOneDayInAWeek = data.weekDays.length === 1
@@ -36,7 +37,7 @@ export function DuoCard({ data }: Props) {
       />
       <DuoInfo
         label='Disponibilidade'
-        value={playOneDayInAWeek ? `${data.weekDays.length} dia` : `${data.weekDays.length} dias`}
+        value={playOneDayInAWeek ? `${data.weekDays.length} dia \u2022 ${data.hourStart.split(':')[0]}h - ${data.hourEnd.split(':')[0]}h` : `${data.weekDays.length} dias \u2022 ${data.hourStart.split(':')[0]}h - ${data.hourEnd.split(':')[0]}h`}
       />
       <DuoInfo
         label='Chamada de áudio?'
@@ -44,7 +45,14 @@ export function DuoCard({ data }: Props) {
         colorValue={data.useVoiceChannel ? `${THEME.COLORS.SUCCESS}` : `${THEME.COLORS.ALERT}`}
       />
 
-
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={onConnect}
+      >
+        <Text style={styles.buttonTitle}>
+          Conectar DUO
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
