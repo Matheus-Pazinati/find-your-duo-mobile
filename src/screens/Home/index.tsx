@@ -26,7 +26,6 @@ export function Home() {
     async function getGames() {
       const response = await fetch('http://192.168.0.104:3333/games');
       const games = await response.json()
-      console.log(games)
       setGames(games)
     }
     getGames()

@@ -1,18 +1,19 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Background } from '../../components/Background';
-import { View, TouchableOpacity, Image } from 'react-native'
-import { Entypo } from '@expo/vector-icons'
-import { THEME } from '../../theme';
-import { Heading } from '../../components/Heading';
+import { useEffect, useState } from 'react';
 
-import logoImg from '../../assets/logo-nlw-esports.png'
-
-import { useRoute, useNavigation } from '@react-navigation/native'
-
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { GameParams } from '../../@types/navigation';
 
-import { styles } from './styles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, TouchableOpacity, Image, FlatList } from 'react-native';
 
+import { Background } from '../../components/Background';
+import { DuoCard, DuoCardProps } from '../../components/DuoCard';
+import { Heading } from '../../components/Heading';
+
+import { Entypo } from '@expo/vector-icons';
+import { THEME } from '../../theme';
+import logoImg from '../../assets/logo-nlw-esports.png';
+import { styles } from './styles';
 
 
 export function Game() {
@@ -25,6 +26,16 @@ export function Game() {
     navigation.goBack()
   }
 
+  const [duos, setDuos] = useState<DuoCardProps[]>([])
+
+  useEffect(() => {
+    async function getGameAds() {
+      const response = await fetch(`http://192.168.0.104:3333/games/${game.id}/ads`);
+      const ads = await response.json()
+      setDuos(ads)
+    }
+    getGameAds()
+  },[])
 
   return (
     <Background>
@@ -54,6 +65,14 @@ export function Game() {
         <Heading
           title={game.title}
           subtitle='Conecte-se e comece a jogar!'
+        />
+
+        <FlatList
+          data={duos}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <DuoCard data={item} />
+          )}
         />
       </SafeAreaView>
     </Background>
