@@ -29,7 +29,13 @@ export function Game() {
   }
 
   const [duos, setDuos] = useState<DuoCardProps[]>([])
-  const [discordContent, setDiscordContent] = useState('abc')
+  const [discordContent, setDiscordContent] = useState('')
+
+  async function handleGetAdDiscordName(adId: string) {
+    const response = await fetch(`http://192.168.0.104:3333/ads/${adId}/discord`);
+    const jsonResponse = await response.json()
+    setDiscordContent(jsonResponse.discord)
+  }
 
   useEffect(() => {
     async function getGameAds() {
@@ -76,7 +82,9 @@ export function Game() {
           renderItem={({ item }) => (
             <DuoCard 
               data={item}
-              onConnect={() => {}}
+              onConnect={() => {
+                handleGetAdDiscordName(item.id)
+              }}
              />
           )}
           horizontal
@@ -91,7 +99,7 @@ export function Game() {
         />
         <DuoModalMatch
           visible={discordContent.length > 0}
-          discord='Matheus-Pazinati'
+          discord={discordContent}
           onClose={() => setDiscordContent('')}
         />
       </SafeAreaView>
