@@ -9,11 +9,13 @@ import { View, TouchableOpacity, Image, FlatList, Text } from 'react-native';
 import { Background } from '../../components/Background';
 import { DuoCard, DuoCardProps } from '../../components/DuoCard';
 import { Heading } from '../../components/Heading';
+import { DuoModalMatch } from '../../components/DuoModalMatch';
 
 import { Entypo } from '@expo/vector-icons';
 import { THEME } from '../../theme';
 import logoImg from '../../assets/logo-nlw-esports.png';
 import { styles } from './styles';
+
 
 
 export function Game() {
@@ -27,6 +29,7 @@ export function Game() {
   }
 
   const [duos, setDuos] = useState<DuoCardProps[]>([])
+  const [discordContent, setDiscordContent] = useState('abc')
 
   useEffect(() => {
     async function getGameAds() {
@@ -85,6 +88,11 @@ export function Game() {
               Não há anúncios publicados para este jogo.
             </Text>
           )}
+        />
+        <DuoModalMatch
+          visible={discordContent.length > 0}
+          discord='Matheus-Pazinati'
+          onClose={() => setDiscordContent('')}
         />
       </SafeAreaView>
     </Background>
