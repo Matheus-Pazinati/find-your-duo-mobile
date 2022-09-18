@@ -1,10 +1,13 @@
-import { View, Modal, ModalProps, Text, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'
+import { useState } from 'react';
+
+import { View, Modal, ModalProps, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+
+import * as Clipboard from 'expo-clipboard';
 
 import { Heading } from '../Heading';
 
 import { styles } from './styles';
-
+import { MaterialIcons } from '@expo/vector-icons'
 import { THEME } from '../../theme';
 
 interface Props extends ModalProps {
@@ -13,11 +16,22 @@ interface Props extends ModalProps {
 }
 
 export function DuoModalMatch({ discord, onClose, ...rest }: Props) {
+
+  const [isCopying, setIsCopying] = useState(false)
+
+  async function handleCopyDiscordToClipboard() {
+    setIsCopying(true)
+    await Clipboard.setStringAsync(discord)
+    Alert.alert('Discord Copiado!', 'Conteúdo copiado para sua área de transferência.')
+    setIsCopying(false)
+  }
+
   return (
     <Modal
       {...rest}
       transparent
       statusBarTranslucent
+      animationType='fade'
     >
       <View style={styles.container}>
 
@@ -49,9 +63,13 @@ export function DuoModalMatch({ discord, onClose, ...rest }: Props) {
             Adicione no Discord
           </Text>
 
-          <TouchableOpacity style={styles.discordButton}>
+          <TouchableOpacity
+           style={styles.discordButton}
+           onPress={handleCopyDiscordToClipboard}
+           disabled={isCopying}
+           >
             <Text style={styles.discord}>
-              {discord}
+              {isCopying ? <ActivityIndicator color={THEME.COLORS.PRIMARY} /> : discord}
             </Text>
           </TouchableOpacity>
 
